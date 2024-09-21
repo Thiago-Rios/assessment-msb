@@ -1,0 +1,29 @@
+services:
+  eureka:
+    image: thiagormg/eureka-server:latest
+    container_name: EUREKA-SERVER
+    ports:
+      - "8761:8761"
+    networks:
+      - assessment
+  at-service:
+      image: thiagormg/at-service
+      networks:
+        - assessment
+      ports:
+        - "8081:8081"
+      depends_on:
+        - eureka
+  veiculo-service:
+    image: thiagormg/veiculo-service
+#    deploy:
+#      replicas: 3
+    networks:
+      - assessment
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka
+networks:
+  assessment:
+    driver: bridge

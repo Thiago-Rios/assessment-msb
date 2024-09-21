@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-server
+spec:
+  selector:
+    matchLabels:
+      app: eureka-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: eureka-server
+    spec:
+      containers:
+        - name: eureka-server
+          image: thiagormg/eureka-server:latest
+          ports:
+            - containerPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server
+spec:
+  type: NodePort
+  ports:
+    - port: 8761
+      targetPort: 8761
+      nodePort: 31761
+  selector:
+    app: eureka-server
